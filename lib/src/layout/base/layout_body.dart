@@ -3,10 +3,11 @@ import 'package:flutter/widgets.dart';
 /// {@template LayoutConfiguration}
 /// Class to configure the layout of the app.
 /// {@endtemplate}
-final class LayoutConfiguration {
+final class LayoutBody extends StatelessWidget {
   /// {@macro LayoutConfiguration}
-  const LayoutConfiguration({
+  const LayoutBody({
     required this.body,
+    super.key,
     this.bodyMedium,
     this.bodyExpanded,
     this.bodyLarge,
@@ -16,7 +17,6 @@ final class LayoutConfiguration {
     this.secondaryLargeBody,
     this.secondaryExtraLargerBody,
     this.tertiaryBody,
-    this.floatingActionButton,
   });
 
   ///Body
@@ -49,6 +49,8 @@ final class LayoutConfiguration {
   ///Tertiary Body
   final Widget? tertiaryBody;
 
-  ///Floating Action Button
-  final Widget? floatingActionButton;
+  @override
+  Widget build(BuildContext context) {
+    return body;
+  }
 }

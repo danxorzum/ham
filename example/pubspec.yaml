@@ -24,48 +24,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  fonts:
-    - family: Montserrat
-      fonts:
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-Black.ttf
-          weight: 900
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-Bold.ttf
-          weight: 700
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-BoldItalic.ttf
-          weight: 700
-          style: italic
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-ExtraBold.ttf
-          weight: 800
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-ExtraBoldItalic.ttf
-          weight: 800
-          style: italic
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-ExtraLight.ttf
-          weight: 200
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-ExtraLightItalic.ttf
-          weight: 200
-          style: italic
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-Italic.ttf
-          style: italic
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-Light.ttf
-          weight: 300
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-LightItalic.ttf
-          weight: 300
-          style: italic
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-Medium.ttf
-          weight: 500
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-MediumItalic.ttf
-          weight: 500
-          style: italic
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-Regular.ttf
-          weight: 400
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-SemiBold.ttf
-          weight: 600
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-SemiBoldItalic.ttf
-          weight: 600
-          style: italic
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-Thin.ttf
-          weight: 100
-        - asset: packages/eco_chillers_core/fonts/Montserrat/Montserrat-ThinItalic.ttf
-          weight: 100
-          style: italic
+  
 

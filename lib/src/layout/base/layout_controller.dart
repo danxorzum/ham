@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ham_framework/src/core/dependencies/dependencies.dart';
 
 ///{@template layout_controller}
 ///[LayoutController] is a class that controls the layout of the app.
@@ -12,7 +13,7 @@ import 'package:flutter/material.dart';
 ///
 ///`Important`: [secondaryBodyRatio] + [bodyRatio] must be equal to 1.
 ///{@endtemplate}
-class LayoutController extends ChangeNotifier {
+final class LayoutController with ChangeNotifier implements Mortal {
   ///{@macro layout_controller}
   LayoutController({
     bool canAnimate = true,
@@ -106,4 +107,26 @@ class LayoutController extends ChangeNotifier {
   /// secondaryBodyRatio indicates the ratio of the secondary body.
   /// If it's null, it will be the half of the remaining space.
   double? get secondaryBodyRatio => _secondaryBodyRatio;
+
+  @override
+  void onAsk() {}
+
+  @override
+  void onBirth() {}
+
+  @override
+  void onDie() {}
+
+  @override
+  Mortal onReproduce() {
+    return LayoutController(
+      canAnimate: _canAnimate,
+      showTopNavigation: _showTopNavigation,
+      showBottomNavigation: _showBottomNavigation,
+      showPrimaryNavigation: _showPrimaryNavigation,
+      showSecondaryNavigation: _showSecondaryNavigation,
+      bodyRatio: _bodyRatio,
+      secondaryBodyRatio: _secondaryBodyRatio,
+    );
+  }
 }

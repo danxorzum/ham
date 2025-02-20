@@ -1,6 +1,6 @@
 name: ham_framework
 description: Flutter responsive framework.
-version: 0.0.1+1
+version: 0.0.2+1
 publish_to: none
 
 environment:
