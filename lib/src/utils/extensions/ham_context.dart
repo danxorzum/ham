@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ham_framework/src/flavors/flavors.dart';
 import 'package:ham_framework/src/routes/route.dart';
 // import 'package:go_router/go_router.dart';
 
-///Extension for [BuildContext] to use all the EcoChillers features.
-extension EcoContext on BuildContext {
+///Extension for [BuildContext] to use all the Ham features.
+extension HamContext on BuildContext {
   ///Get the size of the screen
   Size get sizeOf => MediaQuery.sizeOf(this);
 
@@ -32,31 +31,6 @@ extension EcoContext on BuildContext {
 
   ///Get the current [ColorScheme].
   ColorScheme get colorScheme => theme.colorScheme;
-
-  ///Get the [FlavorFlags] of the context
-  ///[FlavorFlags] is a class that provides the flavor and flag of the app use
-  ///to control the continuous integration of the app.
-  ///
-  ///You can hide functionality based on the flavor of the app. or flags to
-  ///control from backend.
-  FlavorFlags get flavorFlags => FlavorFlags.of(this);
-
-  ///log a message based on the flavor of the app
-  // void log(
-  //   String message, {
-  //   Object? error,
-  //   StackTrace? stack,
-  //   bool isWarning = false,
-  //   bool shouldHandle = false,
-  // }) =>
-  //     setLog(
-  //       message: message,
-  //       enviroment: flavorFlags.flavor,
-  //       error: error,
-  //       stack: stack,
-  //       isWarn: isWarning,
-  //       shouldHandle: shouldHandle,
-  //     );
 
   //Rouer
   ///Get the [GoRouter] of the context

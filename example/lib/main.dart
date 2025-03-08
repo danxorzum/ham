@@ -8,60 +8,78 @@ void main() async {
   runApp(MyApp());
 }
 
-final LayoutController controller =
-    LayoutController(bodyRatio: 0.3, secondaryBodyRatio: 0.3);
-
 final routes = [
   HomeRoute(),
   LoginRoute(),
   ProfileRoute(),
-  HomeRoute(),
-  LoginRoute(),
-  LoginRoute(),
-  HomeRoute(),
-  LoginRoute(),
-  LoginRoute(),
 ];
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final router = GoRouter(initialLocation: AppRoute.profile.fullPath, routes: [
+  final router = GoRouter(initialLocation: AppRoute.home.path, routes: [
+    // final router = GoRouter(initialLocation: AppRoute.profile.fullPath, routes: [
     GoRoute(
         path: AppRoute.home.path,
         // pa
-        builder: (context, state) => Page(
-              routes: routes,
-              currentRoute: AppRoute.home,
-            ),
+        pageBuilder: (context, state) {
+          return MaterialPage(
+            child: AuthLayout(),
+          );
+        },
         name: AppRoute.home.name,
         routes: [
           GoRoute(
             path: AppRoute.profile.path,
-            builder: (context, state) => NavlessLayout(
-              body: Page(
-                routes: routes,
-                currentRoute: AppRoute.profile,
-              ),
+            builder: (context, state) =>
+                // NavlessLayout(
+                // key: const Key('profile'),
+                // body:
+                Page(
+              routes: routes,
+              currentRoute: AppRoute.profile,
             ),
-            name: AppRoute.profile.name,
+            // ),
+            // name: AppRoute.profile.name,
           ),
         ]),
-    GoRoute(
-      path: AppRoute.login.path,
-      builder: (context, state) => Page(
-        routes: routes,
-        currentRoute: AppRoute.login,
-      ),
-      name: AppRoute.login.name,
-    ),
   ]);
 
   @override
   Widget build(BuildContext context) {
     return HamApp(
+      version: '1.0.0',
+      flavor: Enviroment.development,
+      flag: Flag.stable,
       router: router,
       title: 'Eco Chillers Core Example',
+    );
+  }
+}
+
+class AuthLayout extends StatelessWidget {
+  const AuthLayout({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return NavlessLayout(
+        key: const Key('home'),
+        body: Page(
+          routes: routes,
+          currentRoute: AppRoute.home,
+        ));
+  }
+}
+
+class PushView extends StatelessWidget {
+  const PushView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Push View'),
     );
   }
 }
@@ -74,6 +92,7 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final layCont = context.layoutController;
     return AuthBody(
         body: Center(
             child: Column(

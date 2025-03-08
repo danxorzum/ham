@@ -4,8 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ham_framework/src/core/core.dart';
+import 'package:ham_framework/src/flavors/flavors.dart';
 import 'package:ham_framework/src/layout/layouts.dart';
-import 'package:ham_framework/src/utils/utils.dart';
 
 /// {@template HamApp}
 /// The main widget of the app.
@@ -16,6 +16,9 @@ class HamApp extends StatefulWidget {
   /// {@macro HamApp}
   const HamApp({
     required this.router,
+    required this.flavor,
+    required this.flag,
+    required this.version,
     this.themeAnimationCurve = Curves.linear,
     this.themeAnimationStyle,
     this.themeAnimationDuration = kThemeAnimationDuration,
@@ -157,20 +160,33 @@ class HamApp extends StatefulWidget {
   ///title
   final String? title;
 
+  ///Flavor
+  final Enviroment flavor;
+
+  ///Flag
+  final Flag flag;
+
+  ///App version
+  final String version;
+
   @override
   State<HamApp> createState() => _HamAppState();
 }
 
 class _HamAppState extends State<HamApp> {
-  late final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
   @override
   void initState() {
+    Inyector.I.add(LayoutController.new);
+    Inyector.I.register(
+      FlavorNotifier(
+        version: widget.version,
+        flavor: widget.flavor,
+        flag: widget.flag,
+      ),
+    );
+    Inyector.I.register<GoRouter>(widget.router);
     Inyector.I.register(GlobalKey<ScaffoldMessengerState>());
     Inyector.I.register(GlobalKey<ScaffoldState>());
-    Inyector.I.register<GoRouter>(widget.router);
-    Inyector.I.add(LayoutController.new);
-    scaffoldMessengerKey =
-        Inyector.I.getIt<GlobalKey<ScaffoldMessengerState>>();
     super.initState();
   }
 
@@ -178,42 +194,45 @@ class _HamAppState extends State<HamApp> {
   Widget build(BuildContext context) {
     Inyector.I.layoutController.update(canAnimate: true);
 
-    return MaterialApp.router(
-      actions: widget.actions,
-      backButtonDispatcher: widget.backButtonDispatcher,
-      builder: widget.builder,
-      checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
-      checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
-      color: widget.color,
-      darkTheme: widget.darkTheme,
-      debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-      debugShowMaterialGrid: widget.debugShowMaterialGrid,
-      highContrastDarkTheme: widget.highContrastDarkTheme,
-      highContrastTheme: widget.highContrastTheme,
-      locale: widget.locale,
-      key: widget.key,
-      localeListResolutionCallback: widget.localeListResolutionCallback,
-      localeResolutionCallback: widget.localeResolutionCallback,
-      localizationsDelegates: widget.localizationsDelegates,
-      onGenerateTitle: widget.onGenerateTitle,
-      onNavigationNotification: widget.onNavigationNotification,
-      restorationScopeId: widget.restorationScopeId,
-      routeInformationParser: widget.routeInformationParser,
-      routeInformationProvider: widget.routeInformationProvider,
-      routerConfig: widget.router,
-      routerDelegate: widget.routerDelegate,
-      scaffoldMessengerKey: scaffoldMessengerKey,
-      scrollBehavior: widget.scrollBehavior,
-      showPerformanceOverlay: widget.showPerformanceOverlay,
-      shortcuts: widget.shortcuts,
-      showSemanticsDebugger: widget.showSemanticsDebugger,
-      supportedLocales: widget.supportedLocales,
-      theme: widget.theme,
-      themeAnimationCurve: widget.themeAnimationCurve,
-      themeAnimationDuration: widget.themeAnimationDuration,
-      themeAnimationStyle: widget.themeAnimationStyle,
-      themeMode: widget.themeMode,
-      title: widget.title,
+    return FlavorFlags(
+      notifier: Inyector.I.getIt<FlavorNotifier>(),
+      child: MaterialApp.router(
+        actions: widget.actions,
+        backButtonDispatcher: widget.backButtonDispatcher,
+        builder: widget.builder,
+        checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
+        checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
+        color: widget.color,
+        darkTheme: widget.darkTheme,
+        debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+        debugShowMaterialGrid: widget.debugShowMaterialGrid,
+        highContrastDarkTheme: widget.highContrastDarkTheme,
+        highContrastTheme: widget.highContrastTheme,
+        locale: widget.locale,
+        key: widget.key,
+        localeListResolutionCallback: widget.localeListResolutionCallback,
+        localeResolutionCallback: widget.localeResolutionCallback,
+        localizationsDelegates: widget.localizationsDelegates,
+        onGenerateTitle: widget.onGenerateTitle,
+        onNavigationNotification: widget.onNavigationNotification,
+        restorationScopeId: widget.restorationScopeId,
+        routeInformationParser: widget.routeInformationParser,
+        routeInformationProvider: widget.routeInformationProvider,
+        routerConfig: widget.router,
+        routerDelegate: widget.routerDelegate,
+        scaffoldMessengerKey: Inyector.I.scaffoldMessengerKey,
+        scrollBehavior: widget.scrollBehavior,
+        showPerformanceOverlay: widget.showPerformanceOverlay,
+        shortcuts: widget.shortcuts,
+        showSemanticsDebugger: widget.showSemanticsDebugger,
+        supportedLocales: widget.supportedLocales,
+        theme: widget.theme,
+        themeAnimationCurve: widget.themeAnimationCurve,
+        themeAnimationDuration: widget.themeAnimationDuration,
+        themeAnimationStyle: widget.themeAnimationStyle,
+        themeMode: widget.themeMode,
+        title: widget.title,
+      ),
     );
   }
 }

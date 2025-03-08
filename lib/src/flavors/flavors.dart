@@ -1,2 +1,2 @@
-export 'enviroments.dart';
-export 'flavor_flags.dart';
+export 'domain/domain.dart';
+export 'presentation/presentation.dart';

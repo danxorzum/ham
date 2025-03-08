@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
-import 'package:ham_framework/src/layout/base/base.dart';
 
 ///{@template AuthLayout}
 ///[AuthBody] it's adaptive layout for auth screens from any app.
@@ -64,69 +63,50 @@ class AuthBody extends StatelessWidget {
     return 0.5;
   }
 
-  void _disableAnimations(LayoutController controller) {
-    Future.delayed(
-      const Duration(milliseconds: 300),
-      () => controller.update(canAnimate: false),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final controller = InheritedController.of(context);
-        assert(controller != null, 'No LayoutController found in context');
-        if (controller!.canAnimate) _disableAnimations(controller);
-        return AdaptiveLayout(
-          internalAnimations: controller.canAnimate,
-          bodyRatio: _getBodyRatio(context),
-          body: SlotLayout(
-            key: const Key('AuthBody'),
-            config: <Breakpoint, SlotLayoutConfig>{
-              Breakpoints.small: SlotLayout.from(
-                key: const Key('bodySmall'),
-                builder: (_) => _scaffold(body),
-              ),
-              Breakpoints.medium: SlotLayout.from(
-                key: const Key('bodyMedium'),
-                builder: (_) => _scaffold(bodymedium ?? body),
-              ),
-              Breakpoints.mediumLarge: SlotLayout.from(
-                key: const Key('bodyExpanded'),
-                builder: (_) => _scaffold(
-                  bodyexpanded ?? bodymedium ?? body,
-                ),
-              ),
-              Breakpoints.large: SlotLayout.from(
-                key: const Key('bodyLarge'),
-                builder: (_) => _scaffold(
-                  bodylarge ?? bodyexpanded ?? bodymedium ?? body,
-                ),
-              ),
-              Breakpoints.extraLarge: SlotLayout.from(
-                key: const Key('bodyExtraLarge'),
-                builder: (_) => _scaffold(
-                  bodyextralarge ??
-                      bodylarge ??
-                      bodyexpanded ??
-                      bodymedium ??
-                      body,
-                ),
-              ),
-            },
+    return AdaptiveLayout(
+      bodyRatio: _getBodyRatio(context),
+      body: SlotLayout(
+        key: const Key('AuthBody'),
+        config: <Breakpoint, SlotLayoutConfig>{
+          Breakpoints.small: SlotLayout.from(
+            key: const Key('bodySmall'),
+            builder: (_) => _scaffold(body),
           ),
-          secondaryBody: SlotLayout(
-            config: <Breakpoint, SlotLayoutConfig>{
-              Breakpoints.small: SlotLayoutConfig.empty(),
-              Breakpoints.mediumAndUp: SlotLayout.from(
-                key: const Key('secondaryBodySmall'),
-                builder: (_) => secondaryBody,
-              ),
-            },
+          Breakpoints.medium: SlotLayout.from(
+            key: const Key('bodyMedium'),
+            builder: (_) => _scaffold(bodymedium ?? body),
           ),
-        );
-      },
+          Breakpoints.mediumLarge: SlotLayout.from(
+            key: const Key('bodyExpanded'),
+            builder: (_) => _scaffold(
+              bodyexpanded ?? bodymedium ?? body,
+            ),
+          ),
+          Breakpoints.large: SlotLayout.from(
+            key: const Key('bodyLarge'),
+            builder: (_) => _scaffold(
+              bodylarge ?? bodyexpanded ?? bodymedium ?? body,
+            ),
+          ),
+          Breakpoints.extraLarge: SlotLayout.from(
+            key: const Key('bodyExtraLarge'),
+            builder: (_) => _scaffold(
+              bodyextralarge ?? bodylarge ?? bodyexpanded ?? bodymedium ?? body,
+            ),
+          ),
+        },
+      ),
+      secondaryBody: SlotLayout(
+        config: <Breakpoint, SlotLayoutConfig>{
+          Breakpoints.small: SlotLayoutConfig.empty(),
+          Breakpoints.mediumAndUp: SlotLayout.from(
+            key: const Key('secondaryBodySmall'),
+            builder: (_) => secondaryBody,
+          ),
+        },
+      ),
     );
   }
 }

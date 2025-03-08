@@ -13,9 +13,16 @@ final class InheritedController extends InheritedNotifier<LayoutController> {
   }) : super(notifier: notifier);
 
   ///Returns the layout controller of the app or null if it's not found.
-  static LayoutController? of(BuildContext context) {
-    return context
+  static LayoutController of(BuildContext context) {
+    final controller = context
         .dependOnInheritedWidgetOfExactType<InheritedController>()
         ?.notifier;
+    assert(
+      controller != null,
+      //Message to long so we ignore 80 chars rule.
+      // ignore: lines_longer_than_80_chars
+      'No LayoutController found in context ensure you are using InheritedController or HamNavigatorLayout',
+    );
+    return controller!;
   }
 }

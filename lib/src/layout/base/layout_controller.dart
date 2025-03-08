@@ -22,6 +22,7 @@ final class LayoutController with ChangeNotifier implements Mortal {
     bool showPrimaryNavigation = true,
     bool showSecondaryNavigation = true,
     double bodyRatio = 0.5,
+    Duration animationDuration = const Duration(milliseconds: 300),
     double? secondaryBodyRatio,
   })  : _canAnimate = canAnimate,
         _showTopNavigation = showTopNavigation,
@@ -30,6 +31,7 @@ final class LayoutController with ChangeNotifier implements Mortal {
         _showSecondaryNavigation = showSecondaryNavigation,
         _secondaryBodyRatio = secondaryBodyRatio,
         _bodyRatio = bodyRatio,
+        _animationDuration = animationDuration,
         assert(
           bodyRatio + (secondaryBodyRatio ?? 0) <= 1,
           'bodyRatio + secondaryBodyRatio must be less than 1.',
@@ -48,6 +50,8 @@ final class LayoutController with ChangeNotifier implements Mortal {
   double _bodyRatio;
 
   final double? _secondaryBodyRatio;
+
+  final Duration _animationDuration;
 
   ///Update the state of the layout.
   void update({
@@ -107,6 +111,9 @@ final class LayoutController with ChangeNotifier implements Mortal {
   /// secondaryBodyRatio indicates the ratio of the secondary body.
   /// If it's null, it will be the half of the remaining space.
   double? get secondaryBodyRatio => _secondaryBodyRatio;
+
+  ///Animation Duration
+  Duration get animationDuration => _animationDuration;
 
   @override
   void onAsk() {}
