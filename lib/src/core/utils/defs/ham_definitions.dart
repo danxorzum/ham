@@ -7,6 +7,9 @@ typedef Token = String;
 ///Uuid type alias for String.
 typedef Uuid = String;
 
+///Id type alias for int.
+typedef Id = int;
+
 ///Callback type alias for Function.
 typedef Callback = void Function();
 

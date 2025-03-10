@@ -1,3 +1,5 @@
+import 'dart:async';
+
 ///{@template mortal}
 ///Dotate `life` to an object for added a life cycle:
 ///
@@ -7,7 +9,7 @@
 ///{@endtemplate}
 abstract interface class Mortal {
   ///[onBirth] is called when the object is created.
-  void onBirth();
+  FutureOr<void> onBirth();
 
   ///[onReproduce] is called when the object is reproduced.
   ///

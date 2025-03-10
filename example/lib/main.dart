@@ -5,6 +5,7 @@ import 'package:ham_framework/ham_framework.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Inyector.I.add(() => HamCache());
   runApp(MyApp());
 }
 
@@ -20,29 +21,30 @@ class MyApp extends StatelessWidget {
   final router = GoRouter(initialLocation: AppRoute.home.path, routes: [
     // final router = GoRouter(initialLocation: AppRoute.profile.fullPath, routes: [
     GoRoute(
-        path: AppRoute.home.path,
-        // pa
-        pageBuilder: (context, state) {
-          return MaterialPage(
-            child: AuthLayout(),
-          );
-        },
-        name: AppRoute.home.name,
-        routes: [
-          GoRoute(
-            path: AppRoute.profile.path,
-            builder: (context, state) =>
-                // NavlessLayout(
-                // key: const Key('profile'),
-                // body:
-                Page(
-              routes: routes,
-              currentRoute: AppRoute.profile,
-            ),
-            // ),
-            // name: AppRoute.profile.name,
-          ),
-        ]),
+      path: AppRoute.home.path,
+      // pa
+      pageBuilder: (context, state) {
+        return MaterialPage(
+          child: AuthLayout(),
+        );
+      },
+      name: AppRoute.home.name,
+      // routes: [
+      //   GoRoute(
+      //     path: AppRoute.profile.path,
+      //     builder: (context, state) =>
+      //         // NavlessLayout(
+      //         // key: const Key('profile'),
+      //         // body:
+      //         Page(
+      //       routes: routes,
+      //       currentRoute: AppRoute.profile,
+      //     ),
+      //     // ),
+      //     // name: AppRoute.profile.name,
+      //   ),
+      // ]
+    ),
   ]);
 
   @override
@@ -64,6 +66,11 @@ class AuthLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('Auth Layout'),
+      ),
+    );
     return NavlessLayout(
         key: const Key('home'),
         body: Page(

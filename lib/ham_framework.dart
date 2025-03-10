@@ -3,6 +3,7 @@
 library;
 
 export 'package:go_router/go_router.dart';
+export 'package:ham_framework/src/cache/cache.dart';
 export 'package:ham_framework/src/core/core.dart';
 export 'package:ham_framework/src/flavors/flavors.dart';
 export 'package:ham_framework/src/layout/layouts.dart';
