@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
-import 'package:ham_framework/src/layout/base/base.dart';
-import 'package:ham_framework/src/layout/nav/ham_nav_layout.dart';
-import 'package:ham_framework/src/utils/utils.dart';
+import 'package:ham/src/layout/base/base.dart';
+import 'package:ham/src/layout/nav/ham_nav_layout.dart';
+import 'package:ham/src/utils/utils.dart';
 
 /// {@template NavLayout}
 /// [NavlessLayout] is a responsive navigation layout.

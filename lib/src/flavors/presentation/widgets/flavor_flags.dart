@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:ham_framework/src/flavors/domain/enums/enums.dart';
-import 'package:ham_framework/src/flavors/presentation/widgets/flavor_notifier.dart';
+import 'package:ham/src/flavors/domain/enums/enums.dart';
+import 'package:ham/src/flavors/presentation/widgets/flavor_notifier.dart';
 
 ///{@template FlavorFlags}
 /// InheritedNotifier class to provide the flavor and flag of the app.
@@ -10,11 +10,7 @@ import 'package:ham_framework/src/flavors/presentation/widgets/flavor_notifier.d
 /// {@endtemplate}
 final class FlavorFlags extends InheritedNotifier<FlavorNotifier> {
   ///{@macro FlavorFlags}
-  const FlavorFlags({
-    required super.child,
-    required super.notifier,
-    super.key,
-  });
+  const FlavorFlags({required super.child, required super.notifier, super.key});
 
   //getters
   /// Get the environment of the app.

@@ -1,6 +1,6 @@
-import 'package:ham_framework/src/core/core.dart';
+import 'package:ham/src/core/core.dart';
 
-///Base class for cache exceptions in `HamFramework`
+///Base class for cache exceptions in `Ham`
 abstract base class HamCacheException implements HamException {}
 
 ///{@template container_not_found_exception}
@@ -15,6 +15,9 @@ final class KeyNotFoundException extends HamCacheException {
 
   @override
   final StackTrace? stackTrace;
+
+  @override
+  String get suggestion => 'Check if the container is registered in the cache.';
 }
 
 ///{@template delete_failed_exception}
@@ -29,4 +32,7 @@ final class DeleteFailedException extends HamCacheException {
 
   @override
   final StackTrace? stackTrace;
+
+  @override
+  String get suggestion => 'Ensure the key exists in the cache.';
 }

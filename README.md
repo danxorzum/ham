@@ -1,10 +1,16 @@
-# Ham Framework
+# Ham
 
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 [![License: MIT][license_badge]][license_link]
 
-Ham Framework.
+Ham is a adaptive scalable flutter framework.
+
+created by Miguel Angel A. Navarro
+
+Layout module still in develop.
+
+Warnig Ham is still in develop.
 
 ## Installation 💻
 
@@ -13,7 +19,7 @@ Ham Framework.
 Install via `flutter pub add`:
 
 ```sh
-dart pub add ham_framework
+dart pub add ham
 ```
 
 ---

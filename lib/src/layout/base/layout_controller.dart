@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ham_framework/src/core/dependencies/dependencies.dart';
+import 'package:ham/src/core/core.dart';
 
 ///{@template layout_controller}
 ///[LayoutController] is a class that controls the layout of the app.
@@ -24,18 +24,18 @@ final class LayoutController with ChangeNotifier implements Mortal {
     double bodyRatio = 0.5,
     Duration animationDuration = const Duration(milliseconds: 300),
     double? secondaryBodyRatio,
-  })  : _canAnimate = canAnimate,
-        _showTopNavigation = showTopNavigation,
-        _showBottomNavigation = showBottomNavigation,
-        _showPrimaryNavigation = showPrimaryNavigation,
-        _showSecondaryNavigation = showSecondaryNavigation,
-        _secondaryBodyRatio = secondaryBodyRatio,
-        _bodyRatio = bodyRatio,
-        _animationDuration = animationDuration,
-        assert(
-          bodyRatio + (secondaryBodyRatio ?? 0) <= 1,
-          'bodyRatio + secondaryBodyRatio must be less than 1.',
-        );
+  }) : _canAnimate = canAnimate,
+       _showTopNavigation = showTopNavigation,
+       _showBottomNavigation = showBottomNavigation,
+       _showPrimaryNavigation = showPrimaryNavigation,
+       _showSecondaryNavigation = showSecondaryNavigation,
+       _secondaryBodyRatio = secondaryBodyRatio,
+       _bodyRatio = bodyRatio,
+       _animationDuration = animationDuration,
+       assert(
+         bodyRatio + (secondaryBodyRatio ?? 0) <= 1,
+         'bodyRatio + secondaryBodyRatio must be less than 1.',
+       );
 
   bool _canAnimate;
 

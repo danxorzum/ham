@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ham_framework/src/cache/domain/entities/cache_value.dart';
-import 'package:ham_framework/src/cache/domain/exceptions/exceptions.dart';
+import 'package:ham/src/cache/domain/entities/cache_value.dart';
+import 'package:ham/src/cache/domain/exceptions/exceptions.dart';
 
 /// {@template cache_repository}
 /// Repository to manage the cache of the app.

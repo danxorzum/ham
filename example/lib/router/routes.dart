@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ham_framework/ham_framework.dart';
+import 'package:ham/ham.dart';
 
 sealed class AppRoute extends NavigationRoute {
   AppRoute(

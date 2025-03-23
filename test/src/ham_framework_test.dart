@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-// import 'package:ham_framework/ham_framework.dart';
+// import 'package:ham/ham.dart';
 
 void main() {
-  group('HamFramework', () {
+  group('Ham', () {
     test('can be instantiated', () {
       // expect( isNotNull);
     });

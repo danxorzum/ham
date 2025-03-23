@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ham_framework/src/cache/domain/domain.dart';
-import 'package:ham_framework/src/core/core.dart';
+import 'package:ham/src/cache/domain/domain.dart';
+import 'package:ham/src/core/core.dart';
 
 /// {@template cache_retriver}
 /// Interface for cache retriver.
@@ -12,7 +12,7 @@ abstract interface class CacheRetriver {
   /// {@template cache_type}
   /// [cacheType] is the type of cache to use. if null, use the general config.
   /// {@endtemplate}
-  FutureOr<T?> getFromcache<T>({
+  FutureOr<T?> getFromcache<T extends Object>({
     required T Function(Json json) decoder,
     required String container,
     required String key,

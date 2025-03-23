@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ham_framework/src/layout/base/layout_controller.dart';
+import 'package:ham/src/layout/base/layout_controller.dart';
 
 /// {@template InheritedController}
 /// InheritedNotifier class to manage the layout controller of the app.
@@ -14,9 +14,10 @@ final class InheritedController extends InheritedNotifier<LayoutController> {
 
   ///Returns the layout controller of the app or null if it's not found.
   static LayoutController of(BuildContext context) {
-    final controller = context
-        .dependOnInheritedWidgetOfExactType<InheritedController>()
-        ?.notifier;
+    final controller =
+        context
+            .dependOnInheritedWidgetOfExactType<InheritedController>()
+            ?.notifier;
     assert(
       controller != null,
       //Message to long so we ignore 80 chars rule.

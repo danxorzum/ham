@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:ham_framework/src/flavors/domain/enums/enums.dart';
+import 'package:ham/src/flavors/domain/enums/enums.dart';
 
 ///{@template InheritedNotifier}
 /// Notifier class to manage the flavor and flag of the app.
@@ -15,8 +15,8 @@ final class FlavorNotifier extends ChangeNotifier {
     required this.version,
     required Enviroment flavor,
     required Flag flag,
-  })  : _flavor = flavor,
-        _flag = flag;
+  }) : _flavor = flavor,
+       _flag = flag;
 
   final Enviroment _flavor;
   Flag _flag;

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:ham_framework/src/core/core.dart';
-import 'package:ham_framework/src/layout/base/base.dart';
+import 'package:ham/src/core/core.dart';
+import 'package:ham/src/layout/base/base.dart';
 
 ///App Layout extenions for inyector
 extension InyectorX on Inyector {
   ///Get scaffold messenger key
   GlobalKey<ScaffoldMessengerState> get scaffoldMessengerKey =>
-      getIt<GlobalKey<ScaffoldMessengerState>>();
+      Inyector.get<GlobalKey<ScaffoldMessengerState>>();
 
   ///Get scaffold key
-  GlobalKey<ScaffoldState> get scaffoldKey => getIt<GlobalKey<ScaffoldState>>();
+  GlobalKey<ScaffoldState> get scaffoldKey =>
+      Inyector.get<GlobalKey<ScaffoldState>>();
 
   ///Get layout controller
-  LayoutController get layoutController => get<LayoutController>();
+  LayoutController get layoutController => Inyector.get<LayoutController>();
 }

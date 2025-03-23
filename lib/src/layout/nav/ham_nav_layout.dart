@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ham_framework/src/core/core.dart';
-import 'package:ham_framework/src/layout/base/base.dart';
+import 'package:ham/src/core/core.dart';
+import 'package:ham/src/layout/base/base.dart';
 
 /// {@template NavLayout}
 /// [HamNavLayout] is a stateful widget that configures the [LayoutController]
@@ -12,7 +12,7 @@ class HamNavLayout extends StatefulWidget {
 
   ///Builder for the body of the layout
   final Widget Function(BuildContext context, LayoutController controller)
-      builder;
+  builder;
 
   ///Layout controller
   final LayoutController? controller;
@@ -32,7 +32,7 @@ class _NavLayoutState extends State<HamNavLayout> {
     late final LayoutController controller;
     if (widget.controller == null) {
       try {
-        controller = Inyector.I.get<LayoutController>();
+        controller = Inyector.get<LayoutController>();
       } on Exception {
         controller = LayoutController();
       }

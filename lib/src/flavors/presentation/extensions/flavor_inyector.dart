@@ -1,5 +1,5 @@
-import 'package:ham_framework/src/core/inyector/inyector.dart';
-import 'package:ham_framework/src/flavors/presentation/widgets/widgets.dart';
+import 'package:ham/src/core/inyector_di/inyector.dart';
+import 'package:ham/src/flavors/presentation/widgets/widgets.dart';
 
 ///Extension for [Inyector] to use flavors.
 extension FlavorInyector on Inyector {
@@ -9,5 +9,5 @@ extension FlavorInyector on Inyector {
   ///
   ///You can hide functionality based on the flavor of the app. or flags to
   ///control from backend.
-  FlavorNotifier get flavorFlags => getIt<FlavorNotifier>();
+  FlavorNotifier get flavorFlags => Inyector.get<FlavorNotifier>();
 }

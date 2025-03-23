@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ham_framework/src/cache/domain/enums/enums.dart';
-import 'package:ham_framework/src/core/core.dart';
+import 'package:ham/src/cache/domain/enums/enums.dart';
+import 'package:ham/src/core/core.dart';
 
 /// {@template CacheService}
 /// CacheService is a service that provides methods to manage cache.

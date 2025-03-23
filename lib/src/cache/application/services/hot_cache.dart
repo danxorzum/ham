@@ -1,4 +1,4 @@
-import 'package:ham_framework/src/cache/domain/domain.dart';
+import 'package:ham/src/cache/domain/domain.dart';
 
 /// {@template hot_cache}
 /// HotCache is memory cache,
@@ -6,6 +6,7 @@ import 'package:ham_framework/src/cache/domain/domain.dart';
 /// You can save, get, remove and clear cache.
 /// HotCache has `container`s so you can organize your cache.
 /// {@endtemplate}
+@Deprecated('Hotcache is deprecated, becase hive use both memory and disk')
 final class HotCache implements CacheRepository {
   final Map<String, Map<String, CacheValue>> _cache = {};
 
@@ -13,14 +14,7 @@ final class HotCache implements CacheRepository {
   void clear() => _cache.clear();
 
   @override
-  void clearContainer(String container) {
-    final subcache = _cache[container];
-    if (subcache == null) {
-      throw KeyNotFoundException(message: 'Container $container not found');
-    }
-    // TODO(danxorzum): verify if this is correct
-    subcache.clear();
-  }
+  void clearContainer(String container) => _cache[container]?.clear();
 
   @override
   CacheValue? get(String container, String key) => _cache[container]?[key];

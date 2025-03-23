@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ham_framework/src/routes/route.dart';
+import 'package:ham/src/routes/route.dart';
 // import 'package:go_router/go_router.dart';
 
 ///Extension for [BuildContext] to use all the Ham features.
@@ -51,11 +51,6 @@ extension HamContext on BuildContext {
   }
 
   ///Shortcut to show a dialog.
-  Future<T?> sDialog<T>(
-    Widget dialog,
-  ) =>
-      showDialog(
-        context: this,
-        builder: (context) => dialog,
-      );
+  Future<T?> sDialog<T>(Widget dialog) =>
+      showDialog(context: this, builder: (context) => dialog);
 }

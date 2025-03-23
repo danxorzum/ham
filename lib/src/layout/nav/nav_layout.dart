@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
-import 'package:ham_framework/src/core/core.dart';
-import 'package:ham_framework/src/layout/base/base.dart';
-import 'package:ham_framework/src/utils/utils.dart';
+import 'package:ham/src/core/core.dart';
+import 'package:ham/src/layout/base/base.dart';
+import 'package:ham/src/utils/utils.dart';
 
 /// {@template NavLayout}
 /// [NavLayout] is a responsive navigation layout.
@@ -66,13 +66,13 @@ class _NavLayoutState extends State<NavLayout> {
   void initState() {
     late final LayoutController controller;
     try {
-      _scaffoldKey = Inyector.I.getIt<GlobalKey<ScaffoldState>>();
+      _scaffoldKey = Inyector.get<GlobalKey<ScaffoldState>>();
     } on Exception {
       _scaffoldKey = GlobalKey<ScaffoldState>();
     }
     if (widget.controller == null) {
       try {
-        controller = Inyector.I.get<LayoutController>();
+        controller = Inyector.get<LayoutController>();
       } on Exception {
         controller = LayoutController();
       }
@@ -86,11 +86,7 @@ class _NavLayoutState extends State<NavLayout> {
   Widget build(BuildContext context) {
     return InheritedController(
       notifier: _controller,
-      child: _Body(
-        scaffoldKey: _scaffoldKey,
-        widget: widget,
-        key: widget.key,
-      ),
+      child: _Body(scaffoldKey: _scaffoldKey, widget: widget, key: widget.key),
     );
   }
 }
@@ -108,11 +104,8 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = InheritedController.of(context);
-    assert(controller != null, 'No LayoutController found in context');
     return DecoratedBox(
-      decoration: BoxDecoration(
-        color: context.theme.scaffoldBackgroundColor,
-      ),
+      decoration: BoxDecoration(color: context.theme.scaffoldBackgroundColor),
       child: AdaptiveLayout(
         body: SlotLayout(
           config: {

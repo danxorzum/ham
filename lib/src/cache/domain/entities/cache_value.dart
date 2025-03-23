@@ -1,4 +1,4 @@
-import 'package:ham_framework/src/core/core.dart';
+import 'package:ham/src/core/core.dart';
 
 /// {@template cache_value}
 /// Represents an entity that stores cache information.

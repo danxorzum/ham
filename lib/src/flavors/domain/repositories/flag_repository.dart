@@ -1,4 +1,4 @@
-import 'package:ham_framework/src/flavors/domain/enums/enums.dart';
+import 'package:ham/src/flavors/domain/enums/enums.dart';
 
 ///{@template FlagRepository}
 /// Repository to manage the flag of the app.

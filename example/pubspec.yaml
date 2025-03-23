@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   # Referencia al paquete principal (my_package)
-  ham_framework:
+  ham:
     path: ../  # Esto apunta al paquete principal desde la carpeta `example`.
   flutter:
     sdk: flutter

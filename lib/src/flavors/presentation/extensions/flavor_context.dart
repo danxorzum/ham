@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:ham_framework/src/flavors/domain/enums/enums.dart';
-import 'package:ham_framework/src/flavors/presentation/widgets/widgets.dart';
+import 'package:ham/src/flavors/domain/enums/enums.dart';
+import 'package:ham/src/flavors/presentation/widgets/widgets.dart';
 
 ///Extension for [BuildContext] to use flavors.
 extension FlavorContext on BuildContext {

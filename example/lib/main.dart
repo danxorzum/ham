@@ -1,12 +1,42 @@
 // ignore_for_file: avoid_unnecessary_containers
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:example/router/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:ham_framework/ham_framework.dart';
+import 'package:ham/ham.dart';
+
+final class BS extends Bootstrap {
+  @override
+  Future<void> bootstrap() {
+    // WidgetsFlutterBinding.ensureInitialized();
+    return Future.value();
+  }
+
+  @override
+  void logger(Object object, StackTrace stackTrace) {
+    log('Caraja madre no funciona esta chingadera',
+        error: object, stackTrace: stackTrace, name: 'BS');
+  }
+
+  @override
+  Future<void> loadLogger() {
+    return Future.value();
+  }
+}
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Inyector.I.add(() => HamCache());
-  runApp(MyApp());
+  // await runZonedGuarded(() async {
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   runApp(MyApp());
+  // }, BS().logger);
+  await runHamApp(
+    app: MyApp(),
+    enviroment: Enviroment.development,
+    flag: Flag.stable,
+    bootstrap: BS(),
+    appVersion: '1.0.0',
+  );
 }
 
 final routes = [

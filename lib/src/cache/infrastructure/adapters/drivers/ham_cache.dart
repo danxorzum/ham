@@ -1,17 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:ham_framework/src/cache/application/application.dart';
-import 'package:ham_framework/src/cache/domain/domain.dart';
-import 'package:ham_framework/src/cache/infrastructure/adapters/drivens/hive_adapter.dart';
-import 'package:ham_framework/src/cache/infrastructure/ports/ports.dart';
-import 'package:ham_framework/src/core/core.dart';
+import 'package:ham/src/cache/application/application.dart';
+import 'package:ham/src/cache/domain/domain.dart';
+import 'package:ham/src/cache/infrastructure/adapters/drivens/hive_adapter.dart';
+import 'package:ham/src/cache/infrastructure/models/cache_value_hive.dart';
+import 'package:ham/src/cache/infrastructure/ports/ports.dart';
+import 'package:ham/src/core/core.dart';
 import 'package:hive/hive.dart';
-import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
 
 /// {@template ham_cache}
 /// HamCache is a light and powerful cache service.
+///
+///You have to initialize it before use it.
 ///
 ///You have to add to `Inyector` before `HamApp` initialization.
 ///or call onBirth() on your own.
@@ -19,49 +22,49 @@ import 'package:path_provider/path_provider.dart';
 /// {@endtemplate}
 final class HamCache implements Mortal, CacheRetriver {
   /// {@macro ham_cache}
-  HamCache({CacheType cacheType = CacheType.memoryAndDisk})
-    : _cacheType = cacheType;
+  HamCache._(this._cacheType, this._cacheManager);
 
-  late CacheManager _cacheManager;
+  final CacheManager _cacheManager;
   final CacheType _cacheType;
+
+  /// {@macro ham_cache}
+  /// Constructor and initializer
+  static Future<HamCache> constructor({
+    CacheType cacheType = CacheType.memoryAndDisk,
+  }) async {
+    if (kIsWeb) {
+      Hive.init(null);
+    } else {
+      final directory = await getApplicationDocumentsDirectory();
+      Hive.init(directory.path);
+    }
+    Hive.registerAdapter(CacheValueHiveAdapter());
+    final box = await Hive.openBox<String>('ham_cache');
+    final cache = CacheManager(
+      hotCache: HotCache(),
+      coolCache: HiveAdapter(cacheContainer: 'ham_cache'),
+    );
+    final hamCache = HamCache._(cacheType, cache);
+    if (hamCache._cacheType == CacheType.memoryAndDisk ||
+        hamCache._cacheType == CacheType.disk) {
+      {
+        hamCache._cacheManager.verifyExpirationYOrMountInMemory(
+          hamCache._cacheType,
+          box.toMap().values.toList(),
+        );
+      }
+    }
+    return hamCache;
+  }
+
   @override
   void onAsk() {}
 
   @override
-  Future<void> onBirth() async {
-    if (!kIsWeb) {
-      final directory = await getApplicationDocumentsDirectory();
-      Hive.defaultDirectory = directory.path;
-    } else {
-      await Isar.initialize();
-      Hive.defaultDirectory = 'ham_cache';
-    }
-    Hive.registerAdapter('CacheValue', CacheValue.fromJson);
-    _cacheManager = CacheManager(
-      hotCache: HotCache(),
-      coolCache: HiveAdapter(),
-    );
-    if (_cacheType == CacheType.memoryAndDisk || _cacheType == CacheType.disk) {
-      {
-        _cacheManager.verifyExpirationYOrMountInMemory(
-          _cacheType,
-          _getContainersKeys(),
-        );
-      }
-    }
-  }
+  Future<void> onBirth() async {}
 
   @override
   void onDie() {}
-
-  void _registerContainerKey(String container) =>
-      Hive.box<String>(name: 'ham_cache').put(container, container);
-
-  List<String> _getContainersKeys() {
-    final box = Hive.box<String>(name: 'ham_cache');
-    final keys = box.getAll(box.keys);
-    return List<String>.from(keys.where((e) => e != null));
-  }
 
   @override
   Mortal onReproduce() {
@@ -82,11 +85,10 @@ final class HamCache implements Mortal, CacheRetriver {
       container: container,
       cacheType: cacheType ?? _cacheType,
     );
-    Hive.box<String>(name: 'ham_cache').delete(container);
   }
 
   @override
-  FutureOr<T?> getFromcache<T>({
+  FutureOr<T?> getFromcache<T extends Object>({
     required T Function(Json json) decoder,
     required String container,
     required String key,
@@ -126,6 +128,5 @@ final class HamCache implements Mortal, CacheRetriver {
       key: key,
       cacheType: cacheType ?? _cacheType,
     );
-    _registerContainerKey(container);
   }
 }

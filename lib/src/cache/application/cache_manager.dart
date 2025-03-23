@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:ham_framework/src/cache/domain/domain.dart';
-import 'package:ham_framework/src/core/core.dart';
+import 'package:ham/src/cache/domain/domain.dart';
+import 'package:ham/src/core/core.dart';
 
 /// {@template cache_manager}
 /// CacheManager is a service that provides methods to manage cache.
