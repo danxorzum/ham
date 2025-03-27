@@ -67,9 +67,9 @@ final class CacheManager implements CacheService {
 
   @override
   FutureOr<T?> load<T>({
-    required T Function(Map<String, dynamic> json) decoder,
     required String container,
     required String key,
+    T Function(Map<String, dynamic> json)? decoder,
     CacheType cacheType = CacheType.memoryAndDisk,
   }) async {
     if (cacheType == CacheType.memoryAndDisk || cacheType == CacheType.memory) {
@@ -78,7 +78,15 @@ final class CacheManager implements CacheService {
         if (rawValue.isExpired) {
           await _hotCache.remove(container, key);
         } else {
-          return decoder(rawValue.value);
+          if (decoder == null) {
+            try {
+              return Inyector.decode<T>(rawValue.value);
+            } on InyectorKeyNotFound catch (e) {
+              throw DecoderNotFoundException(message: e.message);
+            }
+          } else {
+            return decoder.call(rawValue.value);
+          }
         }
       }
     }
@@ -88,13 +96,24 @@ final class CacheManager implements CacheService {
       if (rawValue != null) {
         if (rawValue.isExpired) {
           await _coolCache.remove(container, key);
-        } else {
-          final value = decoder(rawValue.value);
-          if (cacheType == CacheType.memoryAndDisk) {
-            await _hotCache.set(container, rawValue);
-          }
-          return value;
+          return null;
         }
+        late final T? value;
+        if (decoder == null) {
+          try {
+            value = Inyector.decode<T>(rawValue.value);
+          } on InyectorKeyNotFound catch (e) {
+            throw DecoderNotFoundException(message: e.message);
+          }
+        } else {
+          value = decoder.call(rawValue.value);
+        }
+
+        if (cacheType == CacheType.memoryAndDisk && value != null) {
+          await _hotCache.set(container, rawValue);
+        }
+
+        return value;
       }
     }
 

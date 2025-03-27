@@ -6,10 +6,28 @@ import 'package:example/router/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:ham/ham.dart';
 
+class Test {
+  const Test(this.name);
+  final String name;
+
+  factory Test.fromJson(Map<String, dynamic> json) => Test(json['name']);
+
+  Map<String, dynamic> toJson() => {'name': name};
+}
+
+class Test2 {
+  const Test2(this.name);
+  final String name;
+
+  factory Test2.fromJson(Map<String, dynamic> json) => Test2(json['name']);
+
+  Map<String, dynamic> toJson() => {'name': name};
+}
+
 final class BS extends Bootstrap {
   @override
   Future<void> bootstrap() {
-    // WidgetsFlutterBinding.ensureInitialized();
+    final test = Inyector.decode<Test>({'name': 'test'});
     return Future.value();
   }
 
@@ -21,6 +39,7 @@ final class BS extends Bootstrap {
 
   @override
   Future<void> loadLogger() {
+    Inyector.registerJsonDecoder<Test>(Test.fromJson);
     return Future.value();
   }
 }
@@ -80,9 +99,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HamApp(
-      version: '1.0.0',
-      flavor: Enviroment.development,
-      flag: Flag.stable,
       router: router,
       title: 'Eco Chillers Core Example',
     );

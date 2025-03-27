@@ -36,3 +36,22 @@ final class DeleteFailedException extends HamCacheException {
   @override
   String get suggestion => 'Ensure the key exists in the cache.';
 }
+
+///{@template decoder_not_found_exception}
+///Thrown when a decoder is not found in the cache
+///{@endtemplate}
+final class DecoderNotFoundException extends HamCacheException {
+  ///{@macro decoder_not_found_exception}
+  DecoderNotFoundException({required this.message, this.stackTrace});
+
+  @override
+  final String message;
+
+  @override
+  final StackTrace? stackTrace;
+
+  @override
+  String get suggestion => '''
+Ensure registering the decoder first or send the decoder as a 
+      parameter.''';
+}

@@ -28,20 +28,3 @@ Future<void> runHamApp({
     runApp(app);
   }, hamLog.globalErrorLogger);
 }
-
-// }) async {
-//   BindingBase.debugZoneErrorsAreFatal = true;
-//   WidgetsFlutterBinding.ensureInitialized();
-//   Inyector.add<HamLogger>(
-//     () => HamLogger(logService: LogService(), logger: bootstrap.logger),
-//   );
-//   await Inyector.addAsync<HamCache>(HamCache.constructor);
-//   Inyector.add<FlavorNotifier>(
-//     () => FlavorNotifier(version: appVersion, flavor: enviroment, flag: flag),
-//   );
-//   runZonedGuarded(() {
-//     bootstrap.bootstrap().then((_) {
-//       runApp(app);
-//     });
-//   }, Inyector.get<HamLogger>().globalErrorLogger);
-// }

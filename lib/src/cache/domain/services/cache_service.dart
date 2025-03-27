@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ham/src/cache/domain/enums/enums.dart';
+import 'package:ham/src/cache/domain/domain.dart';
 import 'package:ham/src/core/core.dart';
 
 /// {@template CacheService}
@@ -31,10 +31,13 @@ abstract interface class CacheService {
   ///{@macro keys}
   ///
   ///[decoder] A function that takes a `Json` and returns a value of type [T].
+  ///
+  ///If [decoder] is not provided, it will try to find a decoder in `Injector`.
+  ///If [decoder] is not found, it will throw a [DecoderNotFoundException].
   FutureOr<T?> load<T>({
-    required T Function(Json) decoder,
     required String container,
     required String key,
+    T Function(Json)? decoder,
     CacheType cacheType = CacheType.memoryAndDisk,
   });
 

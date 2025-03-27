@@ -8,17 +8,22 @@ import 'package:ham/src/flavors/flavors.dart';
 import 'package:ham/src/layout/layouts.dart';
 
 /// {@template HamApp}
-/// The main widget of the app.
+/// [MaterialApp] adapted to the `Ham` framework.
 ///
-/// Use `MatertialApp.router` and add some utils for Ham
+/// Use `runHamApp` to preconfigure the app. `runHamApp` cares to provide
+/// [flavor], [flag] and [version] automatically through the [Inyector]. Don't
+/// pass manually [flavor], [flag] and [version].
+///
+/// You can use `runApp` instead of `runHamApp` but it's not recommended.
+/// And you should manually pass [flavor], [flag] and [version].
 /// {@endtemplate}
 final class HamApp extends StatefulWidget {
   /// {@macro HamApp}
   const HamApp({
     required this.router,
-    required this.flavor,
-    required this.flag,
-    required this.version,
+    this.flavor,
+    this.flag,
+    this.version,
     this.themeAnimationCurve = Curves.linear,
     this.themeAnimationStyle,
     this.themeAnimationDuration = kThemeAnimationDuration,
@@ -161,26 +166,38 @@ final class HamApp extends StatefulWidget {
   final String? title;
 
   ///Flavor
-  final Enviroment flavor;
+  final Enviroment? flavor;
 
   ///Flag
-  final Flag flag;
+  final Flag? flag;
 
   ///App version
-  final String version;
+  final String? version;
 
   @override
   State<HamApp> createState() => _HamAppState();
 }
 
 class _HamAppState extends State<HamApp> {
+  late final FlavorNotifier _flavorNotifier;
   @override
   void initState() {
+    super.initState();
     Inyector.add(LayoutController.new);
     Inyector.add<GoRouter>(() => widget.router);
     Inyector.add(GlobalKey<ScaffoldMessengerState>.new);
     Inyector.add(GlobalKey<ScaffoldState>.new);
-    super.initState();
+    if (widget.flavor == null ||
+        widget.flag == null ||
+        widget.version == null) {
+      _flavorNotifier = Inyector.get<FlavorNotifier>();
+    } else {
+      _flavorNotifier = FlavorNotifier(
+        version: widget.version!,
+        flavor: widget.flavor!,
+        flag: widget.flag!,
+      );
+    }
   }
 
   @override
@@ -188,7 +205,7 @@ class _HamAppState extends State<HamApp> {
     Inyector.I.layoutController.update(canAnimate: true);
 
     return FlavorFlags(
-      notifier: Inyector.get<FlavorNotifier>(),
+      notifier: _flavorNotifier,
       child: MaterialApp.router(
         actions: widget.actions,
         backButtonDispatcher: widget.backButtonDispatcher,

@@ -9,18 +9,17 @@ import 'package:ham/src/cache/infrastructure/ports/ports.dart';
 import 'package:ham/src/core/core.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+
 // import 'package:hive_flutter/hive_flutter.dart';
 
 /// {@template ham_cache}
 /// HamCache is a light and powerful cache service.
 ///
-///You have to initialize it before use it.
+/// [constructor] is the only constructor of [HamCache].
 ///
-///You have to add to `Inyector` before `HamApp` initialization.
-///or call onBirth() on your own.
-/// You can manage cache in memory and on disk.
+///`runHamApp` configures [HamCache] and injects it into [Inyector].
 /// {@endtemplate}
-final class HamCache implements Mortal, CacheRetriver {
+final class HamCache implements CacheRetriver {
   /// {@macro ham_cache}
   HamCache._(this._cacheType, this._cacheManager);
 
@@ -58,21 +57,6 @@ final class HamCache implements Mortal, CacheRetriver {
   }
 
   @override
-  void onAsk() {}
-
-  @override
-  Future<void> onBirth() async {}
-
-  @override
-  void onDie() {}
-
-  @override
-  Mortal onReproduce() {
-    _cacheManager.clearAll();
-    return this;
-  }
-
-  @override
   FutureOr<void> clear({CacheType? cacheType}) =>
       _cacheManager.clearAll(cacheType: cacheType ?? _cacheType);
 
@@ -89,9 +73,9 @@ final class HamCache implements Mortal, CacheRetriver {
 
   @override
   FutureOr<T?> getFromcache<T extends Object>({
-    required T Function(Json json) decoder,
     required String container,
     required String key,
+    T Function(Json json)? decoder,
     CacheType? cacheType,
   }) => _cacheManager.load<T>(
     decoder: decoder,

@@ -3,6 +3,7 @@ import 'package:ham/src/core/defs/defs.dart';
 ///{@template list_response}
 /// Class to catch list http response.
 /// {@endtemplate}
+@Deprecated('This isnt ham property, so do not use anymore')
 class ListResponse<T> {
   ///{@macro list_response}
   factory ListResponse.fromJson({
