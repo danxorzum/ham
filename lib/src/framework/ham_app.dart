@@ -185,8 +185,7 @@ class _HamAppState extends State<HamApp> {
     super.initState();
     Inyector.add(LayoutController.new);
     Inyector.add<GoRouter>(() => widget.router);
-    Inyector.add(GlobalKey<ScaffoldMessengerState>.new);
-    Inyector.add(GlobalKey<ScaffoldState>.new);
+
     if (widget.flavor == null ||
         widget.flag == null ||
         widget.version == null) {
@@ -202,8 +201,6 @@ class _HamAppState extends State<HamApp> {
 
   @override
   Widget build(BuildContext context) {
-    Inyector.I.layoutController.update(canAnimate: true);
-
     return FlavorFlags(
       notifier: _flavorNotifier,
       child: MaterialApp.router(

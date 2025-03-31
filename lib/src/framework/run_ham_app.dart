@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import 'package:ham/src/cache/cache.dart';
 import 'package:ham/src/core/core.dart';
@@ -24,6 +24,8 @@ Future<void> runHamApp({
     WidgetsFlutterBinding.ensureInitialized();
     Inyector.add<HamLogger>(() => hamLog);
     await Inyector.addAsync<HamCache>(HamCache.constructor);
+    Inyector.add(GlobalKey<ScaffoldMessengerState>.new);
+    Inyector.add(GlobalKey<ScaffoldState>.new);
     await bootstrap.bootstrap();
     runApp(app);
   }, hamLog.globalErrorLogger);
