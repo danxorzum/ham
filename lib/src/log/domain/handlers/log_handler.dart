@@ -1,4 +1,4 @@
-import 'package:ham/src/core/core.dart';
+import 'package:ham/src/flavors/flavors.dart';
 import 'package:ham/src/log/domain/entities/entities.dart';
 
 /// {@template log_handler}
@@ -6,24 +6,22 @@ import 'package:ham/src/log/domain/entities/entities.dart';
 /// {@endtemplate}
 abstract interface class LogHandler {
   /// Logs error manually.
-  LogError errorLog({
+  HamLogError errorLog({
     required Object error,
     required StackTrace stackTrace,
     required String appVersion,
+    required Enviroment enviroment,
+    required Flag flag,
   });
 
   /// logs messages or errors manually.
   /// Helps to handle the development environment.
-  /// if [shouldHandle] is true, sould call logger api. if false only log on
-  /// console.
-  ///
-  /// [isWarn] is a flag that indicates whether the log is a warning or not.
-  /// if [shouldHandle] is true, [isWarn] is ignored.
-  Either<Log, bool> log({
+  HamLog log({
     required String message,
     StackTrace? stack,
     Object? error,
-    bool isWarn = false,
-    bool shouldHandle = false,
+    String? appVersion,
+    Enviroment? enviroment,
+    Flag? flag,
   });
 }

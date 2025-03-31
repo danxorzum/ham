@@ -1,16 +1,19 @@
+import 'package:ham/src/log/domain/entities/log_error.dart';
+
 /// {@template log}
-/// [Log] helps to handle the logging.
+/// [HamLog] helps to handle the logging.
 /// {@endtemplate}
-final class Log {
+final class HamLog {
   /// {@macro log}
-  const Log({required this.message, this.stack, this.error});
+  const HamLog({required this.message, this.error});
 
   /// Message to be logged
   final String message;
 
-  /// Stack trace to be logged
-  final StackTrace? stack;
-
   /// Error to be logged
-  final Object? error;
+  final HamLogError? error;
+
+  @override
+  String toString() =>
+      'HamLog(message: $message,  ${error != null ? 'error: $error ' : ''})';
 }

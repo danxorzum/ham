@@ -15,19 +15,35 @@ Future<void> runHamApp({
   required Bootstrap Function() bootstraper,
   required String appVersion,
 }) async {
-  Inyector.add<FlavorNotifier>(
-    () => FlavorNotifier(version: appVersion, flavor: enviroment, flag: flag),
-  );
   final bootstrap = bootstraper();
-  await bootstrap.loadLogger();
-  final hamLog = HamLogger(logService: LogService(), logger: bootstrap.logger);
-  await runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    Inyector.add<HamLogger>(() => hamLog);
-    await Inyector.addAsync<HamCache>(HamCache.constructor);
-    Inyector.add(GlobalKey<ScaffoldMessengerState>.new);
-    Inyector.add(GlobalKey<ScaffoldState>.new);
-    await bootstrap.bootstrap();
-    runApp(app());
-  }, hamLog.globalErrorLogger);
+  final hamLog = HamLogger(
+    logger: bootstrap.logger,
+    env: enviroment,
+    flag: flag,
+    appVersion: appVersion,
+  );
+  FlutterError.onError =
+      (err) => hamLog.globalErrorLogger(
+        error: err,
+        stackTrace: err.stack ?? StackTrace.current,
+      );
+
+  await runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await bootstrap.loadLogger();
+      Inyector.add<FlavorNotifier>(
+        () =>
+            FlavorNotifier(version: appVersion, flavor: enviroment, flag: flag),
+      );
+      hamLog.initialize();
+      Inyector.add<HamLogger>(() => hamLog);
+      await Inyector.addAsync<HamCache>(HamCache.constructor);
+      Inyector.add(GlobalKey<ScaffoldMessengerState>.new);
+      Inyector.add(GlobalKey<ScaffoldState>.new);
+      await bootstrap.bootstrap();
+      runApp(app());
+    },
+    (error, stack) => hamLog.globalErrorLogger(error: error, stackTrace: stack),
+  );
 }
