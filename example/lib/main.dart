@@ -50,10 +50,10 @@ void main() async {
   //   runApp(MyApp());
   // }, BS().logger);
   await runHamApp(
-    app: MyApp(),
+    app: () => MyApp(),
     enviroment: Enviroment.development,
     flag: Flag.stable,
-    bootstrap: BS(),
+    bootstraper: () => BS(),
     appVersion: '1.0.0',
   );
 }
