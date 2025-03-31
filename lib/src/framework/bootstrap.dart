@@ -1,4 +1,5 @@
 import 'package:ham/src/core/core.dart';
+import 'package:ham/src/flavors/flavors.dart';
 
 /// {@template bootstrap}
 /// Bootstrap base class.
@@ -21,7 +22,7 @@ abstract class Bootstrap {
   ///
   ///Bostrap is called before the application starts. and after the dependencies
   ///are injected.
-  Future<void> bootstrap();
+  Future<void> bootstrap(Enviroment enviroment);
 
   ///Use your favorite logging service
   void logger(Object object, StackTrace stackTrace);
@@ -31,5 +32,5 @@ abstract class Bootstrap {
   ///Only configure your logging service here.
   ///
   ///For inject dependencies or other configuration use [bootstrap]
-  Future<void> loadLogger();
+  Future<void> loadLogger(Enviroment enviroment);
 }

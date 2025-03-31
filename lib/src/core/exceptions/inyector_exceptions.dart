@@ -14,6 +14,9 @@ final class InyectorKeyNotFound extends HamException {
 
   @override
   String get suggestion => 'Ensure that the key is registered first';
+
+  @override
+  String toString() => 'InyectorKeyNotFound: $message, try: $suggestion';
 }
 
 ///{@template inyector_duplicate_key_exception}
@@ -31,4 +34,7 @@ final class InyectorDuplicateKey extends HamException {
   @override
   String get suggestion =>
       'Use tag to set multiple dependencies with same type';
+
+  @override
+  String toString() => 'InyectorDuplicateKey: $message, try: $suggestion';
 }

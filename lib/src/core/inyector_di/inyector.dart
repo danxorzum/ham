@@ -245,6 +245,10 @@ final class _Inyector implements Inyector {
     late final T item;
     if (!_dependencies.exists(nameTag)) {
       item = _wakeLazy<T>(nameTag).instance;
+      if (item is Mortal) {
+        (item as Mortal).onBirth();
+        log('\x1B[35m$nameTag onBirth \x1B[0m', name: 'Inyector');
+      }
     } else {
       item = _dependencies.get<_InyectorItem<T>>(key: nameTag).instance;
     }

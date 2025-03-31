@@ -26,7 +26,7 @@ class Test2 {
 
 final class BS extends Bootstrap {
   @override
-  Future<void> bootstrap() {
+  Future<void> bootstrap(Enviroment enviroment) async {
     final test = Inyector.decode<Test>({'name': 'test'});
     return Future.value();
   }
@@ -38,7 +38,7 @@ final class BS extends Bootstrap {
   }
 
   @override
-  Future<void> loadLogger() {
+  Future<void> loadLogger(Enviroment enviroment) async {
     Inyector.registerJsonDecoder<Test>(Test.fromJson);
     return Future.value();
   }

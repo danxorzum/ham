@@ -35,6 +35,9 @@ final class DeleteFailedException extends HamCacheException {
 
   @override
   String get suggestion => 'Ensure the key exists in the cache.';
+
+  @override
+  String toString() => 'DeleteFailedException: $message. Try: $suggestion';
 }
 
 ///{@template decoder_not_found_exception}
@@ -54,4 +57,7 @@ final class DecoderNotFoundException extends HamCacheException {
   String get suggestion => '''
 Ensure registering the decoder first or send the decoder as a 
       parameter.''';
+
+  @override
+  String toString() => 'DecoderNotFoundException: $message. Try: $suggestion';
 }

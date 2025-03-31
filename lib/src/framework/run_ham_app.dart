@@ -31,7 +31,7 @@ Future<void> runHamApp({
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      await bootstrap.loadLogger();
+      await bootstrap.loadLogger(enviroment);
       Inyector.add<FlavorNotifier>(
         () =>
             FlavorNotifier(version: appVersion, flavor: enviroment, flag: flag),
@@ -41,7 +41,7 @@ Future<void> runHamApp({
       await Inyector.addAsync<HamCache>(HamCache.constructor);
       Inyector.add(GlobalKey<ScaffoldMessengerState>.new);
       Inyector.add(GlobalKey<ScaffoldState>.new);
-      await bootstrap.bootstrap();
+      await bootstrap.bootstrap(enviroment);
       runApp(app());
     },
     (error, stack) => hamLog.globalErrorLogger(error: error, stackTrace: stack),
