@@ -9,7 +9,7 @@ import 'package:ham/src/core/core.dart';
 /// - use `Inyector` in [bootstrap] to inject dependencies.
 /// - framework dependencies are injected in `runHamApp` before [bootstrap]
 /// {@endtemplate}.
-abstract base class Bootstrap {
+abstract class Bootstrap {
   ///`Ham` bootstrap is called before the application starts.
   /// Loads and configure your external libraries & dependencies
   ///
