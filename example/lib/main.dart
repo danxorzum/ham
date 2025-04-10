@@ -1,54 +1,27 @@
 // ignore_for_file: avoid_unnecessary_containers
 import 'dart:async';
-import 'dart:developer';
 
-import 'package:example/router/routes.dart';
+import 'package:example/presentation/layouts/test_layout.dart';
+import 'package:example/presentation/test/bodies/test_body.dart';
 import 'package:flutter/material.dart';
 import 'package:ham/ham.dart';
-
-class Test {
-  const Test(this.name);
-  final String name;
-
-  factory Test.fromJson(Map<String, dynamic> json) => Test(json['name']);
-
-  Map<String, dynamic> toJson() => {'name': name};
-}
-
-class Test2 {
-  const Test2(this.name);
-  final String name;
-
-  factory Test2.fromJson(Map<String, dynamic> json) => Test2(json['name']);
-
-  Map<String, dynamic> toJson() => {'name': name};
-}
 
 final class BS extends Bootstrap {
   @override
   Future<void> bootstrap(Enviroment enviroment) async {
-    final test = Inyector.decode<Test>({'name': 'test'});
     return Future.value();
   }
 
   @override
-  void logger(Object object, StackTrace stackTrace) {
-    log('Caraja madre no funciona esta chingadera',
-        error: object, stackTrace: stackTrace, name: 'BS');
-  }
+  void logger(Object object, StackTrace stackTrace) {}
 
   @override
   Future<void> loadLogger(Enviroment enviroment) async {
-    Inyector.registerJsonDecoder<Test>(Test.fromJson);
     return Future.value();
   }
 }
 
 void main() async {
-  // await runZonedGuarded(() async {
-  //   WidgetsFlutterBinding.ensureInitialized();
-  //   runApp(MyApp());
-  // }, BS().logger);
   await runHamApp(
     app: () => MyApp(),
     enviroment: Enviroment.development,
@@ -58,41 +31,20 @@ void main() async {
   );
 }
 
-final routes = [
-  HomeRoute(),
-  LoginRoute(),
-  ProfileRoute(),
-];
-
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final router = GoRouter(initialLocation: AppRoute.home.path, routes: [
-    // final router = GoRouter(initialLocation: AppRoute.profile.fullPath, routes: [
+  final router = GoRouter(initialLocation: '/', routes: [
     GoRoute(
-      path: AppRoute.home.path,
-      // pa
+      path: '/',
       pageBuilder: (context, state) {
         return MaterialPage(
-          child: AuthLayout(),
+          child: TestLayout(
+            body: TestBody(),
+          ),
         );
       },
-      name: AppRoute.home.name,
-      // routes: [
-      //   GoRoute(
-      //     path: AppRoute.profile.path,
-      //     builder: (context, state) =>
-      //         // NavlessLayout(
-      //         // key: const Key('profile'),
-      //         // body:
-      //         Page(
-      //       routes: routes,
-      //       currentRoute: AppRoute.profile,
-      //     ),
-      //     // ),
-      //     // name: AppRoute.profile.name,
-      //   ),
-      // ]
+      name: 'home',
     ),
   ]);
 
@@ -105,27 +57,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AuthLayout extends StatelessWidget {
-  const AuthLayout({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Auth Layout'),
-      ),
-    );
-    return NavlessLayout(
-        key: const Key('home'),
-        body: Page(
-          routes: routes,
-          currentRoute: AppRoute.home,
-        ));
-  }
-}
-
 class PushView extends StatelessWidget {
   const PushView({super.key});
 
@@ -134,33 +65,5 @@ class PushView extends StatelessWidget {
     return Center(
       child: Text('Push View'),
     );
-  }
-}
-
-class Page extends StatelessWidget {
-  const Page({super.key, required this.routes, required this.currentRoute});
-
-  final List<AppRoute> routes;
-  final AppRoute currentRoute;
-
-  @override
-  Widget build(BuildContext context) {
-    final layCont = context.layoutController;
-    return AuthBody(
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(currentRoute.name),
-            MaterialButton(
-              onPressed: () {
-                Inyector.I.scaffoldMessengerKey.currentState
-                    ?.showSnackBar(SnackBar(content: Text('Picale')));
-              },
-              child: Text('Picale'),
-            )
-          ],
-        )),
-        secondaryBody: Center(child: Icon(Icons.telegram, size: 100)));
   }
 }

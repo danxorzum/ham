@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ham/src/core/core.dart';
 import 'package:ham/src/flavors/flavors.dart';
-import 'package:ham/src/layout/layouts.dart';
+import 'package:ham/src/layout/layout.dart';
 
 /// {@template HamApp}
 /// [MaterialApp] adapted to the `Ham` framework.
@@ -183,7 +183,7 @@ class _HamAppState extends State<HamApp> {
   @override
   void initState() {
     super.initState();
-    Inyector.add(LayoutController.new);
+    Inyector.add(() => LayoutController(layoutState: const LayoutState()));
     Inyector.add<GoRouter>(() => widget.router);
 
     if (widget.flavor == null ||

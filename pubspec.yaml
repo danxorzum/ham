@@ -1,6 +1,6 @@
 name: ham
 description: Flutter responsive framework.
-version: 0.1.2+2
+version: 0.2.0+1
 publish_to: none
 
 environment:
@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_adaptive_scaffold: ^0.3.2
   go_router: ^14.8.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0

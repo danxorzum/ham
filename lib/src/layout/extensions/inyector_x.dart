@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ham/src/core/core.dart';
-import 'package:ham/src/layout/base/base.dart';
+import 'package:ham/src/layout/layout_controller.dart';
 
 ///App Layout extenions for inyector
 extension InyectorX on Inyector {

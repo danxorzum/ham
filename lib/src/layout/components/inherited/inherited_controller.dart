@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:ham/src/layout/base/layout_controller.dart';
+import 'package:flutter/widgets.dart';
+import 'package:ham/src/layout/layout_controller.dart';
 
 /// {@template InheritedController}
-/// InheritedNotifier class to manage the layout controller of the app.
+/// Insert and listener for the layout controller of the view.
 /// {@endtemplate}
 final class InheritedController extends InheritedNotifier<LayoutController> {
   /// {@macro InheritedController}
