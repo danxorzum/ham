@@ -1,25 +1,29 @@
-import 'package:ham/src/core/value_objects/outcome.dart';
 import 'package:meta/meta.dart';
 
 /// {@template tuple}
 /// A tuple is a class that represents a pair of values.
 /// {@endtemplate}
 @immutable
-final class Tuple<L, R> extends Outcome<L, R> {
+final class Tuple<L, R> {
   /// {@macro tuple}
-  Tuple(this.left, this.right);
+  const Tuple(this.left, this.right);
 
-  @override
+  /// The left value.
   final L left;
 
-  @override
+  /// The right value.
   final R right;
+
+  /// Returns a copy of this tuple with optional new values.
+  Tuple<L, R> copyWith({L? left, R? right}) {
+    return Tuple(left ?? this.left, right ?? this.right);
+  }
 
   @override
   String toString() => 'Tuple(left: $left, right: $right)';
 
   @override
-  int get hashCode => left.hashCode ^ right.hashCode;
+  int get hashCode => Object.hash(left, right);
 
   @override
   bool operator ==(Object other) =>
