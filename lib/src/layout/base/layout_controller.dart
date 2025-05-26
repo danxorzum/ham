@@ -125,6 +125,12 @@ final class LayoutController with ChangeNotifier implements Mortal {
   void onDie() {}
 
   @override
+  void onDieWithoutChildren() {}
+
+  @override
+  void onChildBirth() {}
+
+  @override
   Mortal onReproduce() {
     return LayoutController(
       canAnimate: _canAnimate,

@@ -22,11 +22,16 @@ typedef JsonContructor<T> = T Function(Json json);
 ///
 /// `Mortal` dependencies are objects that implement the [Mortal] life cycle:
 ///  - [Mortal.onBirth] is called when the object is created.
+///  - [Mortal.onChildBirth] is called when a new descendant (child) is created
+/// from this object.
 ///  - [Mortal.onAsk] is called when the object is founded in the inyector.
 ///  - [Mortal.onReproduce] is called when the object copies itself.
 ///  It called before the [Mortal.onDie] method.
 ///  - [Mortal.onDie] is called when the object is disposed and removed from the
 ///  [Inyector].
+///  - [Mortal.onDieWithoutChildren] is called when the object is disposed
+/// without having created descendants. This method is called only if the
+/// dependency is not mortal.
 ///
 /// If dependencies are't mortal, they won't be affected by the [Inyector] life
 /// cycle.
@@ -56,6 +61,11 @@ sealed class Inyector {
   ///Decode a json to a type.
   static T decode<T>(Json json) => _instance._decode(json);
 
+  /// Unregister a json decoder.
+  static void unregisterJsonDecoder<T>() =>
+      _instance._unregisterJsonDecoder<T>();
+
+  ///{@template add}
   /// Register a dependency in the DI container.
   ///
   /// [lazy] is a flag that indicates if the value   should be created
@@ -76,6 +86,7 @@ sealed class Inyector {
   /// create a new instance of the dependency. Non mortal dependencies saves
   /// their [spawn] function. If is false, [spawn] function is't saved.
   /// {@endtemplate}
+  /// {@endtemplate}
   static void add<T>(
     T Function() spawn, {
     String? tag,
@@ -83,15 +94,18 @@ sealed class Inyector {
     bool rebirth = true,
   }) => _instance._add(spawn, tag: tag, lazy: lazy, rebirth: rebirth);
 
+  ///{@template addAsync}
   /// Future version of [add].
   ///
   /// {@macro add}
+  /// {@endtemplate}
   static Future<void> addAsync<T>(
     Future<T> Function() spawn, {
     String? tag,
     bool rebirth = false,
   }) => _instance._addAsync(spawn, tag: tag, rebirth: rebirth);
 
+  ///{@template remove}
   /// Remove dependency from the `inyector`.
   ///
   /// In `Mortal` dependencies, [Mortal.onDie] method is called before removing.
@@ -101,27 +115,34 @@ sealed class Inyector {
   /// called before removing.
   ///
   /// Throws HamException if dependency is not found.
+  /// {@endtemplate}
   static void remove<T>({String? tag}) => _instance._remove<T>(tag: tag);
 
+  ///{@template get}
   /// Get dependency from the `inyector`.
   ///
   /// If dependency is mortal, [Mortal.onAsk] method is called.
   ///
   /// Throws HamException if dependency is not found.
+  /// {@endtemplate}
   static T get<T>({String? key}) => _instance._get<T>(key: key);
 
-  /// Clean all dependencies. In non motals if `rebirth` option is true, it calls
-  /// `spawn` method.
+  ///{@template clean}
+  /// Clean all dependencies. In non motals if `rebirth` option is true, it
+  /// calls `spawn` method.
   ///
   /// In `Mortal` dependencies, if `rebirth` is true, [Mortal.onReproduce]
   /// method is called.
   /// [Mortal.onDie] method is called in each mortal dependency.
+  /// {@endtemplate}
   static void clean() => _instance._clean();
 
+  ///{@template reset}
   /// Reset the `inyector`. delete all dependencies and they can't `rebirth`,
   /// even if `rebirth` option is true.
   ///
   /// It calls [Mortal.onDie] method for all objects [Mortal]s.
+  /// {@endtemplate}
   static void reset() => _instance._reset();
 
   void _add<T>(
@@ -147,6 +168,8 @@ sealed class Inyector {
 
   void _registerJsonDecoder<T>(JsonContructor<T> fromJson);
 
+  void _unregisterJsonDecoder<T>();
+
   void _registerJsonsDecoders(Map<Type, JsonConstructorGeneric> fromJsons);
 
   T _decode<T>(Json json);
@@ -161,10 +184,11 @@ final class _Inyector implements Inyector {
 
   _InyectorItem<T> _wakeLazy<T>(String nameTag) {
     late final _InyectoLazyItem<T> lazyItem;
-    if (!_lazyDependencies.get<_InyectoLazyItem<T>>(key: nameTag).canRebirth) {
-      lazyItem = _lazyDependencies.remove<_InyectoLazyItem<T>>(key: nameTag);
-    } else {
+    if (_lazyDependencies.get<_InyectoLazyItem<T>>(key: nameTag).canRebirth &&
+        T is! Mortal) {
       lazyItem = _lazyDependencies.get<_InyectoLazyItem<T>>(key: nameTag);
+    } else {
+      lazyItem = _lazyDependencies.remove<_InyectoLazyItem<T>>(key: nameTag);
     }
     final result = _InyectorItem<T>(
       instance: lazyItem.spawner(),
@@ -184,6 +208,15 @@ final class _Inyector implements Inyector {
       dependency: _InyectoLazyItem<T>(spawner: spawn, canRebirth: canRebirth),
       key: nameTag,
     );
+  }
+
+  T _reproduce<T extends Mortal>(T mortal, String name) {
+    final child = mortal.onReproduce()..onChildBirth();
+    log('\x1B[35m$name onReproduce\x1B[0m', name: 'Inyector');
+    log('\x1B[35m$name onChildBirth\x1B[0m', name: 'Inyector');
+    mortal.onDie();
+    log('\x1B[35m$name onDie\x1B[0m', name: 'Inyector');
+    return child as T;
   }
 
   @override
@@ -265,8 +298,7 @@ final class _Inyector implements Inyector {
     final item = _dependencies.remove<_InyectorItem<T>>(key: nameTag);
     if (item.instance is Mortal) {
       if (item.canRebirth) {
-        final child = (item.instance as Mortal).onReproduce();
-        log('\x1B[35m$nameTag onReproduce\x1B[0m', name: 'Inyector');
+        final child = _reproduce(item.instance as Mortal, nameTag);
         _dependencies.add<_InyectorItem<T>>(
           dependency: _InyectorItem<T>(
             instance: child as T,
@@ -274,9 +306,10 @@ final class _Inyector implements Inyector {
           ),
           key: nameTag,
         );
+      } else {
+        (item.instance as Mortal).onDieWithoutChildren();
+        log('\x1B[35m$nameTag onDieWithoutChildren\x1B[0m', name: 'Inyector');
       }
-      (item.instance as Mortal).onDie();
-      log('\x1B[35m$nameTag onDie\x1B[0m', name: 'Inyector');
     }
     log('\x1B[35mDependency removed: $nameTag\x1B[0m', name: 'Inyector');
   }
@@ -284,8 +317,11 @@ final class _Inyector implements Inyector {
   void _cleanDependencies() {
     _dependencies.getDependencies().forEach((key, value) {
       if ((value as _InyectorItem<dynamic>).instance is Mortal) {
-        (value.instance as Mortal).onDie();
-        log('\x1B[35mAll Mortal dependencies onDie\x1B[0m', name: 'Inyector');
+        (value.instance as Mortal).onDieWithoutChildren();
+        log(
+          '\x1B[35mAll Mortal dependencies onDieWithoutChildren\x1B[0m',
+          name: 'Inyector',
+        );
       }
     });
     _dependencies.clear();
@@ -294,23 +330,22 @@ final class _Inyector implements Inyector {
   @override
   void _clean() {
     final values = _dependencies.getDependencies();
-    final rebirths = <String, _InyectorItem<Mortal>>{};
+    final rebirths = <String, _InyectorItem<dynamic>>{};
     values.forEach((key, value) {
-      if ((value as _InyectorItem).instance is Mortal) {
+      if ((value as _InyectorItem<dynamic>).instance is Mortal) {
         if (value.canRebirth) {
-          rebirths[key] = _InyectorItem(
-            instance: (value.instance as Mortal).onReproduce(),
-            canRebirth: value.canRebirth,
+          rebirths[key] = value.copyWith(
+            instance: _reproduce(value.instance as Mortal, key),
           );
-          log('\x1B[35m$key onReproduce\x1B[0m', name: 'Inyector');
+        } else {
+          (value.instance as Mortal).onDieWithoutChildren();
+          log('\x1B[35m$key onDieWithoutChildren\x1B[0m', name: 'Inyector');
         }
-        (value.instance as Mortal).onDie();
-        log('\x1B[35m$key onDie\x1B[0m', name: 'Inyector');
       }
     });
     _dependencies.clear();
     rebirths.forEach((key, value) {
-      _dependencies.add<_InyectorItem<Mortal>>(dependency: value, key: key);
+      _dependencies.add<_InyectorItem<dynamic>>(dependency: value, key: key);
     });
     log('\x1B[35mAll dependencies are cleaned\x1B[0m', name: 'Inyector');
   }
@@ -319,11 +354,12 @@ final class _Inyector implements Inyector {
   void _reset() {
     _lazyDependencies.clear();
     _cleanDependencies();
+    _decoders.clear();
   }
 
   @override
-  void _registerJsonDecoder<T>(JsonContructor<T> fromJson, {String? tag}) {
-    final key = tag ?? nameTagFromType(T, '');
+  void _registerJsonDecoder<T>(JsonContructor<T> fromJson) {
+    final key = nameTagFromType(T, '');
     if (_decoders.exists(key)) {
       throw InyectorDuplicateKey(
         message: 'You already have a decoder registered for this type: $key',
@@ -334,9 +370,23 @@ final class _Inyector implements Inyector {
   }
 
   @override
+  void _unregisterJsonDecoder<T>() {
+    final key = nameTagFromType(T, '');
+    _decoders.remove<JsonContructor<T>>(key: key);
+  }
+
+  @override
   void _registerJsonsDecoders(Map<Type, JsonConstructorGeneric> fromJsons) {
     fromJsons.forEach((key, value) {
-      _registerJsonDecoder(value, tag: nameTagFromType(key, ''));
+      final fixedKey = nameTagFromType(key, '');
+      if (_decoders.exists(fixedKey)) {
+        throw InyectorDuplicateKey(
+          message:
+              'You already have a decoder registered for this type: $fixedKey',
+          stackTrace: StackTrace.current,
+        );
+      }
+      _decoders.add(dependency: value, key: fixedKey);
     });
   }
 
@@ -358,6 +408,13 @@ final class _InyectorItem<T> {
   _InyectorItem({required this.instance, required this.canRebirth});
   final T instance;
   final bool canRebirth;
+
+  _InyectorItem<T> copyWith({T? instance}) {
+    return _InyectorItem<T>(
+      instance: instance ?? this.instance,
+      canRebirth: this.canRebirth,
+    );
+  }
 }
 
 final class _InyectoLazyItem<T> {
