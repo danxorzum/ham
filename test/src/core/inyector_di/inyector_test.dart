@@ -98,7 +98,6 @@ void main() {
 
   group('Inyector - JSON Decoder Tests', () {
     setUp(Inyector.reset);
-    
 
     test('should register and use a JSON decoder', () {
       // Arrange

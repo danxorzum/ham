@@ -18,9 +18,7 @@ class LayoutViewContainer extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(25, 16, 25, 25),
       decoration: BoxDecoration(
         color: context.colorScheme.surfaceContainerLow,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(16),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
       child: child,
     );

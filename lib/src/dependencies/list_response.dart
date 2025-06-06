@@ -11,10 +11,9 @@ class ListResponse<T> {
     required T Function(Json) fromJson,
     required String key,
   }) => ListResponse._(
-    list:
-        ((json['data'] as Json)[key] as List)
-            .map((e) => fromJson(e as Json))
-            .toList(),
+    list: ((json['data'] as Json)[key] as List)
+        .map((e) => fromJson(e as Json))
+        .toList(),
   );
 
   const ListResponse._({required this.list});

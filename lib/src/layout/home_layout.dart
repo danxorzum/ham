@@ -112,8 +112,9 @@ class _HomeLayoutState extends State<HomeLayout> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (context.canPop() && widget.tertiaryExtralargeBody != null) {
-        _globalKey.currentState
-            ?.showBottomSheet((_) => widget.tertiaryExtralargeBody!);
+        _globalKey.currentState?.showBottomSheet(
+          (_) => widget.tertiaryExtralargeBody!,
+        );
       }
     });
   }
@@ -145,13 +146,12 @@ class _HomeLayoutState extends State<HomeLayout> {
     if (widget._controller.showTopNavigation &&
         Breakpoints.small.isActive(context)) {
       return AppBar(
-        title: Text(
-          widget.currentRoute.labelName,
-        ),
+        title: Text(widget.currentRoute.labelName),
         foregroundColor: context.colorScheme.onPrimaryContainer,
         // surfaceTintColor: context.colorScheme.primary,
-        backgroundColor:
-            context.canPop() ? context.colorScheme.primaryContainer : null,
+        backgroundColor: context.canPop()
+            ? context.colorScheme.primaryContainer
+            : null,
         centerTitle: true,
       );
     }
@@ -188,8 +188,9 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   SlotLayout? _bottonNavBar() {
     if (context.canPop()) return null;
-    final routes =
-        widget.routes.length > 5 ? widget.routes.sublist(0, 5) : widget.routes;
+    final routes = widget.routes.length > 5
+        ? widget.routes.sublist(0, 5)
+        : widget.routes;
 
     return SlotLayout(
       config: <Breakpoint, SlotLayoutConfig>{
@@ -226,7 +227,8 @@ class _HomeLayoutState extends State<HomeLayout> {
           key: const Key('Secondary Body Medium And Up'),
           builder: (_) => Padding(
             padding: const EdgeInsets.fromLTRB(12.5, 25, 25, 25),
-            child: widget.secondaryExtralargeBody ??
+            child:
+                widget.secondaryExtralargeBody ??
                 widget.secondaryLargeBody ??
                 widget.secondaryExpandedBody ??
                 widget.secondaryMediumBody ??
@@ -243,7 +245,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                   SizedBox(
                     width:
                         context.width * widget._controller.secondaryBodyRatio!,
-                    child: widget.secondaryExtralargeBody ??
+                    child:
+                        widget.secondaryExtralargeBody ??
                         widget.secondaryLargeBody ??
                         widget.secondaryExpandedBody ??
                         widget.secondaryMediumBody ??
@@ -251,7 +254,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                   ),
                 if (widget.secondaryExtralargeBody == null)
                   Expanded(
-                    child: widget.secondaryExtralargeBody ??
+                    child:
+                        widget.secondaryExtralargeBody ??
                         widget.secondaryLargeBody ??
                         widget.secondaryExpandedBody ??
                         widget.secondaryMediumBody ??
@@ -296,7 +300,8 @@ class _HomeLayoutState extends State<HomeLayout> {
           key: const Key('Body Medium And Up'),
           builder: (_) => Padding(
             padding: const EdgeInsets.fromLTRB(25, 25, 12.5, 25),
-            child: widget.bodyExtralarge ??
+            child:
+                widget.bodyExtralarge ??
                 widget.bodylarge ??
                 widget.bodyexpanded ??
                 widget.bodymedium ??
@@ -318,10 +323,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
-          child: Text(
-            'Menu',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
+          child: Text('Menu', style: Theme.of(context).textTheme.titleSmall),
         ),
         ...widget.routes.map(
           (route) => NavigationDrawerDestination(
@@ -337,10 +339,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           child: Divider(),
         ),
         NavigationDrawerDestination(
-          icon: Icon(
-            Icons.logout,
-            color: context.colorScheme.error,
-          ),
+          icon: Icon(Icons.logout, color: context.colorScheme.error),
           label: Text(
             'Logout',
             style: TextStyle(color: context.colorScheme.error),

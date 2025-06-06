@@ -29,7 +29,8 @@ final class HamLogError {
   final StackTrace stackTrace;
 
   @override
-  String toString() => '''
+  String toString() =>
+      '''
 HamLogError:
 appversion: $appversion 
 enviroment: $enviroment

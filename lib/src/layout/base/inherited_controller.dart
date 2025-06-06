@@ -14,10 +14,9 @@ final class InheritedController extends InheritedNotifier<LayoutController> {
 
   ///Returns the layout controller of the app or null if it's not found.
   static LayoutController of(BuildContext context) {
-    final controller =
-        context
-            .dependOnInheritedWidgetOfExactType<InheritedController>()
-            ?.notifier;
+    final controller = context
+        .dependOnInheritedWidgetOfExactType<InheritedController>()
+        ?.notifier;
     assert(
       controller != null,
       //Message to long so we ignore 80 chars rule.

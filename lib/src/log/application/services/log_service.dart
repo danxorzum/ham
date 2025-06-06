@@ -47,16 +47,15 @@ final class LogService implements LogHandler {
 
     return HamLog(
       message: message,
-      error:
-          error != null
-              ? HamLogError(
-                appversion: appVersion!,
-                error: error,
-                stackTrace: stack!,
-                enviroment: enviroment!,
-                flag: flag!,
-              )
-              : null,
+      error: error != null
+          ? HamLogError(
+              appversion: appVersion!,
+              error: error,
+              stackTrace: stack!,
+              enviroment: enviroment!,
+              flag: flag!,
+            )
+          : null,
     );
   }
 }

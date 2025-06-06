@@ -70,8 +70,9 @@ abstract class NavigationRoute {
     Map<String, String> queryParams,
     Map<String, String> params,
   ) {
-    var fullPath =
-        withParams(params); // Primero reemplaza los parámetros en la ruta
+    var fullPath = withParams(
+      params,
+    ); // Primero reemplaza los parámetros en la ruta
     if (queryParams.isNotEmpty) {
       final queryString = queryParams.entries.map(_entryBuild).join('&');
       fullPath = '$fullPath?$queryString';

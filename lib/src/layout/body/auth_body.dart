@@ -80,15 +80,12 @@ class AuthBody extends StatelessWidget {
           ),
           Breakpoints.mediumLarge: SlotLayout.from(
             key: const Key('bodyExpanded'),
-            builder: (_) => _scaffold(
-              bodyexpanded ?? bodymedium ?? body,
-            ),
+            builder: (_) => _scaffold(bodyexpanded ?? bodymedium ?? body),
           ),
           Breakpoints.large: SlotLayout.from(
             key: const Key('bodyLarge'),
-            builder: (_) => _scaffold(
-              bodylarge ?? bodyexpanded ?? bodymedium ?? body,
-            ),
+            builder: (_) =>
+                _scaffold(bodylarge ?? bodyexpanded ?? bodymedium ?? body),
           ),
           Breakpoints.extraLarge: SlotLayout.from(
             key: const Key('bodyExtraLarge'),
