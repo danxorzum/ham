@@ -22,11 +22,10 @@ Future<void> runHamApp({
     flag: flag,
     appVersion: appVersion,
   );
-  FlutterError.onError =
-      (err) => hamLog.globalErrorLogger(
-        error: err,
-        stackTrace: err.stack ?? StackTrace.current,
-      );
+  FlutterError.onError = (err) => hamLog.globalErrorLogger(
+    error: err,
+    stackTrace: err.stack ?? StackTrace.current,
+  );
 
   await runZonedGuarded(
     () async {
@@ -38,7 +37,8 @@ Future<void> runHamApp({
       );
       hamLog.initialize();
       Inyector.add<HamLogger>(() => hamLog);
-      await Inyector.addAsync<HamCache>(HamCache.constructor);
+
+      await Inyector.addAsync<HamCache>(_loadCache);
       Inyector.add(GlobalKey<ScaffoldMessengerState>.new);
       Inyector.add(GlobalKey<ScaffoldState>.new);
       await bootstrap.bootstrap(enviroment);
@@ -46,4 +46,9 @@ Future<void> runHamApp({
     },
     (error, stack) => hamLog.globalErrorLogger(error: error, stackTrace: stack),
   );
+}
+
+Future<HamCache> _loadCache() async {
+  final cache = await HamCache.constructor();
+  return cache;
 }

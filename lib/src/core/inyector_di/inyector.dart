@@ -255,6 +255,7 @@ final class _Inyector implements Inyector {
     bool rebirth = true,
   }) async {
     final nameTag = nameTagFromType(T, tag ?? '');
+    // TODO(danxorzum): on web JS DDC fails with HamCache. search what hapends
     final instance = await futureConstructor();
     _dependencies.add<_InyectorItem<T>>(
       dependency: _InyectorItem<T>(instance: instance, canRebirth: rebirth),

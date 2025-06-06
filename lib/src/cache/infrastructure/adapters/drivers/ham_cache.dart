@@ -19,6 +19,7 @@ import 'package:path_provider/path_provider.dart';
 ///
 ///`runHamApp` configures [HamCache] and injects it into [Inyector].
 /// {@endtemplate}
+// TODO(danxorzum): Remake this class to support be hexagonal architecture. Currently is not possible to mock the cache.
 final class HamCache implements CacheRetriver {
   /// {@macro ham_cache}
   HamCache._(this._cacheType, this._cacheManager);
